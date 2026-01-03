@@ -7,7 +7,7 @@ def read_json(file_path):
         return json.load(file)
 
 def write_csv(components, output_file):
-    headers = ["Name", "Version", "Description", "Developer", "License", "User Document"]
+    headers = ["Name", "Version", "Description", "Developer", "License", "User Document", "PURL"]
 
     with open(output_file, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
@@ -25,8 +25,9 @@ def write_csv(components, output_file):
                 license = ""
 
             user_document = next((ref['url'] for ref in component.get("externalReferences", []) if ref.get("type") == "website"), "")
+            purl = component.get("purl", "")
 
-            writer.writerow([name, version, description, developer, license, user_document])
+            writer.writerow([name, version, description, developer, license, user_document, purl])
 
 def main():
     parser = argparse.ArgumentParser(description='Convert SBOM JSON to CSV')
